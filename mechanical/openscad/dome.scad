@@ -45,13 +45,18 @@ module cap(r){
     }
 }
 
-r = 254/2;
-//for(a=[0:5]) rotate([0,-30,a*50-10]) translate([r-12,0,0]) rotate([0,-90,90]) 9gServo();
-//rpi3();
-//color("red", 0.5)
-//difference()
-{
-    dome(r);
+//r = 254/2;
+//=======
+//r = 90;
+////for(a=[0:5]) rotate([0,-30,a*50-10]) translate([r-12,0,0]) rotate([0,-90,90]) 9gServo();
+////rpi3();
+////color("red", 0.5)
+////difference()
+//{
+//    dome(r);
+////    cylinder(h=2*r,d=60, center=true);
+////    translate([0,0,1]) rotate([0,0,0]) door(r,7);
+//    color("red") dome(r);
 //    cylinder(h=2*r,d=60, center=true);
 //    translate([0,0,1]) rotate([0,0,0]) door(r,7);
 //    translate([0,0,1]) rotate([0,0,1*60]) door(r,7);
@@ -60,7 +65,7 @@ r = 254/2;
 //    translate([0,0,1]) rotate([0,0,4*60]) door(r,7);
 //    translate([0,0,1]) rotate([0,0,5*60]) door(r,7);
  //   for (a=[0:0]) translate([0,0,1]) rotate([0,0,a*60]) door(r,7);
-}
+//}
 
 //for (a=[0:5]) translate([0,0,10]) rotate([0,0,a*60]) color("silver") door(r);
 
