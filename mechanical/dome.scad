@@ -10,6 +10,14 @@ module dome(r){
         sphere(d=dia);
         sphere(d=dia-8);
         translate([-dia/2,-dia/2,-dia/2]) cube([dia,dia,dia/2]);
+        cylinder(h=2*r,d=60, center=true);
+//        for (a=[0:2]) translate([0,0,1]) rotate([0,0,a*60]) door(r,7);
+        translate([0,0,1]) rotate([0,0,0]) door(r,7);
+        translate([0,0,1]) rotate([0,0,1*60]) door(r,7);
+        translate([0,0,1]) rotate([0,0,2*60]) door(r,7);
+//        translate([0,0,1]) rotate([0,0,3*60]) door(r,7);
+//        translate([0,0,1]) rotate([0,0,4*60]) door(r,7);
+//        translate([0,0,1]) rotate([0,0,5*60]) door(r,7);
     }
 }
 
@@ -37,16 +45,16 @@ module cap(r){
     }
 }
 
-r = 90;
-for(a=[0:5]) rotate([0,-30,a*50-10]) translate([r-12,0,0]) rotate([0,-90,90]) 9gServo();
+r = 254/2;
+//for(a=[0:5]) rotate([0,-30,a*50-10]) translate([r-12,0,0]) rotate([0,-90,90]) 9gServo();
 //rpi3();
 //color("red", 0.5)
-difference()
+//difference()
 {
-    color("red") dome(r);
-    cylinder(h=2*r,d=60, center=true);
-    translate([0,0,1]) rotate([0,0,0]) door(r,7);
-    translate([0,0,1]) rotate([0,0,1*60]) door(r,7);
+    dome(r);
+//    cylinder(h=2*r,d=60, center=true);
+//    translate([0,0,1]) rotate([0,0,0]) door(r,7);
+//    translate([0,0,1]) rotate([0,0,1*60]) door(r,7);
 //    translate([0,0,1]) rotate([0,0,2*60]) door(r,7);
 //    translate([0,0,1]) rotate([0,0,3*60]) door(r,7);
 //    translate([0,0,1]) rotate([0,0,4*60]) door(r,7);
