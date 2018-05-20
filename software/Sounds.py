@@ -35,13 +35,13 @@ class AudioPlayer(object):
 			raise Exception('Error: volume must be between 0-100%')
 			os.system('amixer cset numid=3 {}%'.format(level))
 
-		def set_on_off(self, on=True):
-			val = None
-			if on:
-				val = 'on'
-			else:
-				val = 'off'
-			os.system('amixer cset numid=4 {}'.format(val))
+	def set_on_off(self, on=True):
+		val = None
+		if on:
+			val = 'on'
+		else:
+			val = 'off'
+		os.system('amixer cset numid=4 {}'.format(val))
 
 	def play(self, filename):
 		Popen('{} -q -V1 {}'.format(self.audio_player, filename), shell=True).wait()
