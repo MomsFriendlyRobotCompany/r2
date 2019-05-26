@@ -1,15 +1,22 @@
 import numpy as np
 
 
-class IMU(object):
+class NXP_IMU(object):
     def __init__(self, gs=2, dps=250, verbose=False):
         print("FAKE nxp_imu")
+        self.an = np.random.normal(0, 0.5, 3*1000)
+        self.gn = np.random.normal(0, 0.5, 3*1000)
+        self.mn = np.random.normal(0, 0.5, 3*1000)
+        self.cnt = 0
 
     def __del__(self):
         pass
 
     def get(self):
-        return tuple([0]*9)
+        ret = self.an[self.cnt:self.cnt+3] + self.gn[self.cnt:self.cnt+3] + self.mn[self.cnt:self.cnt+3]
+        self.cnt += 3
+        self.cnt %= 3*1000
+        return tuple(ret)
 
 
 class PCA9685(object):
