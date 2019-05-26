@@ -6,16 +6,34 @@ import time
 #from PIL import Image
 #from PIL import ImageDraw
 import numpy as np
-from Adafruit_LED_Backpack_kw import Matrix8x8
+from Adafruit_LED_Backpack import Matrix8x8
+
+
+class Randomizer(object):
+    def __init__(self, size=10):
+        self.pts = np.random.randint(2, size=64*size)
+        self.size = size
+        self.cnt = 0
+
+    def get(self):
+        ret = self.pts[self.cnt:self.cnt + 64]
+        # self.cnt += 1
+        self.cnt = (self.cnt + 1) % self.size
+        return ret
 
 class MatrixArray(object):
-    def __init__(self, ids):
+    def __init__(self, ids, brightness=14):
         self.lcds = []
+        self.rand = Randomizer(20)
         for id in ids:
             self.lcds.append(Matrix8x8.Matrix8x8(address=id))
 
+        if 15 < brightness < 0:
+            raise Exception("MatrixArray::brightness must be 0-15:", brightness)
+
         for lcd in self.lcds:
             lcd.begin()
+            lcd.set_brightness(brightness)
             lcd.clear()
             lcd.write_display()
 
@@ -26,17 +44,21 @@ class MatrixArray(object):
 
     def random(self, lcds=None):
         for lcd in self.lcds:
-            pts = np.random.randint(2, size=64)
+            # pts = np.random.randint(2, size=64)
+            pts = self.rand.get()
             lcd.clear()
             for i, v in enumerate(pts):
               lcd.set_pixel(i//8, i%8, v)
             lcd.write_display()
 
-m = MatrixArray([0x70, 0x72, 0x73])
+m = MatrixArray([0x70, 0x72, 0x73], brightness=0)
 
-for _ in range(50):
-    m.random()
-    time.sleep(0.1)
+try:
+    while True:
+        m.random()
+        time.sleep(0.1)
+except KeyboardInterrupt:
+    print("\n")
 
 # Create display instance on default I2C address (0x70) and bus number.
 # display = Matrix8x8.Matrix8x8()
