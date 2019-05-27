@@ -4,8 +4,8 @@ import numpy as np
 class NXP_IMU(object):
     def __init__(self, gs=2, dps=250, verbose=False):
         print("FAKE nxp_imu")
-        self.an = np.random.normal(0, 0.5, 3*1000)
-        self.gn = np.random.normal(0, 0.5, 3*1000)
+        self.an = np.random.normal(0, 0.001, 3*1000)
+        self.gn = np.random.normal(0, 0.2, 3*1000)
         self.mn = np.random.normal(0, 0.5, 3*1000)
         self.cnt = 0
 
@@ -13,7 +13,18 @@ class NXP_IMU(object):
         pass
 
     def get(self):
+        """
+        This is based of some static reading I took.
+        returns (accel, mag, gyro)
+        """
         ret = self.an[self.cnt:self.cnt+3] + self.gn[self.cnt:self.cnt+3] + self.mn[self.cnt:self.cnt+3]
+        ret[2] += 1.0
+
+        # magnetometer
+        ret[3] += -22
+        ret[4] += -5
+        ret[5] += 9
+
         self.cnt += 3
         self.cnt %= 3*1000
         return tuple(ret)
