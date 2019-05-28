@@ -4,6 +4,18 @@ from pygecko.multiprocessing import geckopy
 from pygecko.multiprocessing import GeckoSimpleProcess
 import time
 
+from lib.led_matrix import MatrixArray
+
+try:
+    from nxp_imu import IMU as NXP_IMU
+except ImportError:
+    from lib.fake import NXP_IMU
+
+try:
+    from picamera import PiCamera
+except ImportError:
+    from lib.fake import PiCamera
+
 KEY = "logan"
 
 
@@ -19,16 +31,13 @@ def imu_pub():
     if p is None:
         raise Exception("publisher is None")
 
-    start = time.time()
-    cnt = 0
-    while not geckopy.is_shutdown():
-        msg = {'time': time.time() - start}
-        p.publish(msg)  # topic msg
+    imu = NXP_IMU()
 
-        geckopy.logdebug('[{}] published msg'.format(cnt))
-        cnt += 1
+    while not geckopy.is_shutdown():
+        msg = imu.get()
+        p.publish(msg)  # topic msg
         rate.sleep()
-    print('pub bye ...')
+    print('imu pub bye ...')
 
 
 def camera_pub():
@@ -43,21 +52,20 @@ def camera_pub():
     if p is None:
         raise Exception("publisher is None")
 
-    start = time.time()
-    cnt = 0
+    cam = PiCamera()
     while not geckopy.is_shutdown():
-        msg = {'time': time.time() - start}
-        p.publish(msg)  # topic msg
-
-        geckopy.logdebug('[{}] published msg'.format(cnt))
-        cnt += 1
+        # img = cam.read()
+        img = True
+        if img:
+            msg = "hi"
+            p.publish(msg)
         rate.sleep()
-    print('pub bye ...')
+    print('camera pub bye ...')
 
 
-def subscriber():
+def matrix_sub():
     geckopy.init_node()
-    rate = geckopy.Rate(2)
+    rate = geckopy.Rate(10)
 
     s = geckopy.subConnectTCP(
         KEY,
@@ -67,10 +75,14 @@ def subscriber():
     if s is None:
         raise Exception("subscriber is None")
 
+    m = MatrixArray([0x70, 0x71, 0x72, 0x73], brightness=0)
+
     while not geckopy.is_shutdown():
         msg = s.recv_nb()
         if msg:
             geckopy.loginfo("{}: {}".format(msg))
+        m.random()
+        # time.sleep(0.1)
         rate.sleep()
 
     print('sub bye ...')
@@ -89,9 +101,16 @@ if __name__ == '__main__':
     # until the program ends
     procs = []
 
-    p = GeckoSimpleProcess()
-    p.start(func=imu_pub, name='imu_pub')
-    procs.append(p)
+    run = [
+        imu_pub,
+        camera_pub,
+        matrix_sub
+    ]
+
+    for func in run:
+        p = GeckoSimpleProcess()
+        p.start(func=func)
+        procs.append(p)
 
     # s = GeckoSimpleProcess()
     # s.start(func=subscriber, name='sub_{}'.format(topic), kwargs=args)

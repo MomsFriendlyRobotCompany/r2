@@ -1,6 +1,4 @@
 #!/usr/bin/env python
-# Note: you have to use a modified version of the Adafruit library because
-# PIL/Pillow suck!!
 import time
 
 #from PIL import Image

@@ -4,9 +4,9 @@ import numpy as np
 class NXP_IMU(object):
     def __init__(self, gs=2, dps=250, verbose=False):
         print("FAKE nxp_imu")
-        self.an = np.random.normal(0, 0.001, 3*1000)
-        self.gn = np.random.normal(0, 0.2, 3*1000)
-        self.mn = np.random.normal(0, 0.5, 3*1000)
+        self.an = list(np.random.normal(0, 0.001, 3*1000))
+        self.gn = list(np.random.normal(0, 0.2, 3*1000))
+        self.mn = list(np.random.normal(0, 0.5, 3*1000))
         self.cnt = 0
 
     def __del__(self):
@@ -18,6 +18,7 @@ class NXP_IMU(object):
         returns (accel, mag, gyro)
         """
         ret = self.an[self.cnt:self.cnt+3] + self.gn[self.cnt:self.cnt+3] + self.mn[self.cnt:self.cnt+3]
+        # print(">> ret:", ret)
         ret[2] += 1.0
 
         # magnetometer
@@ -80,3 +81,23 @@ class array(object):
     @staticmethod
     def PiRGBArray(cam, size):
         return BGR(size)
+
+
+class fake_i2c(object):
+    buffer = []
+    def __init__(self, **kwargs): pass
+    def set_led(self, a, b, c): pass
+    def set_pixel(self, a, b, c): pass
+    def clear(self): pass
+    def writeList(self, a, b): pass
+    def begin(self): pass
+    def start(self): pass
+
+
+class Matrix8x8(fake_i2c):
+    _device = fake_i2c()
+    def __init__(self, **kwargs): pass
+
+
+class BicolorMatrix8x8(fake_i2c):
+    def __init__(self, **kwargs): pass
