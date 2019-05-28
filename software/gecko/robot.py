@@ -67,22 +67,21 @@ def matrix_sub():
     geckopy.init_node()
     rate = geckopy.Rate(10)
 
-    s = geckopy.subConnectTCP(
-        KEY,
-        "test"
-    )
-
-    if s is None:
-        raise Exception("subscriber is None")
+    # s = geckopy.subConnectTCP(
+    #     KEY,
+    #     "test"
+    # )
+    #
+    # if s is None:
+    #     raise Exception("subscriber is None")
 
     m = MatrixArray([0x70, 0x71, 0x72, 0x73], brightness=0)
 
     while not geckopy.is_shutdown():
-        msg = s.recv_nb()
-        if msg:
-            geckopy.loginfo("{}: {}".format(msg))
+        # msg = s.recv_nb()
+        # if msg:
+        #     geckopy.loginfo("{}: {}".format(msg))
         m.random()
-        # time.sleep(0.1)
         rate.sleep()
 
     print('sub bye ...')

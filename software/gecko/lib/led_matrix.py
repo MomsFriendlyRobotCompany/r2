@@ -5,10 +5,10 @@
 import numpy as np
 
 try:
-    from Adafruit_LED_Backpack import Matrix8x8
+    from Adafruit_LED_Backpack.Matrix8x8 import Matrix8x8
 except ImportError:
     from .fake import Matrix8x8
-    
+
 
 class Randomizer(object):
     def __init__(self, size=10):
@@ -28,7 +28,7 @@ class MatrixArray(object):
         self.lcds = []
         self.rand = Randomizer(20)
         for id in ids:
-            self.lcds.append(Matrix8x8.Matrix8x8(address=id))
+            self.lcds.append(Matrix8x8(address=id))
 
         if 15 < brightness < 0:
             raise Exception("MatrixArray::brightness must be 0-15:", brightness)

@@ -92,6 +92,8 @@ class fake_i2c(object):
     def writeList(self, a, b): pass
     def begin(self): pass
     def start(self): pass
+    def set_brightness(self, a): pass
+    def write_display(self): pass
 
 
 class Matrix8x8(fake_i2c):
