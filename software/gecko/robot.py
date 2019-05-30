@@ -5,6 +5,7 @@ from pygecko.multiprocessing import GeckoSimpleProcess
 import time
 
 from lib.led_matrix import MatrixArray
+from lib.servo import Servo
 
 try:
     from nxp_imu import IMU as NXP_IMU
