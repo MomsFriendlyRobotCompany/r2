@@ -17,6 +17,10 @@ try:
 except ImportError:
     from lib.fake import PiCamera
 
+# from imutils.video import VideoStream
+# vs = VideoStream(usePiCamera=args["picamera"] > 0).start()
+# frame = vs.read()
+
 KEY = "logan"
 
 
